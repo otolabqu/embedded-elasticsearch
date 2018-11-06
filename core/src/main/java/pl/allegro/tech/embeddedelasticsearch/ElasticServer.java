@@ -134,7 +134,7 @@ class ElasticServer {
                 if (elastic != null) {
                     System.out.println("elastic.isAlive()? :" + elastic.isAlive());
                 }
-                if (elastic != null && elastic.isAlive()) {
+                if ( started && elastic != null && elastic.isAlive() ) {
                     System.out.println("Elastic is alive! brekaing the wait loop");
                     break;
                 }
