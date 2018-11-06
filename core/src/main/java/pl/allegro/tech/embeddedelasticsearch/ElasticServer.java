@@ -88,9 +88,14 @@ class ElasticServer {
                 String line;
                 while ((line = readLine(outputStream)) != null) {
                     logger.info(line);
+                    System.out.println("Elastic log: "  + line);
                     parseElasticLogLine(line);
                 }
             } catch (Exception e) {
+                System.out.println("Elastic startup exception: ");
+                System.out.println(e);
+                System.out.println(e.getMessage());
+                System.out.println(e.getStackTrace());
                 throw new EmbeddedElasticsearchStartupException(e);
             }
         }, "EmbeddedElsHandler");
