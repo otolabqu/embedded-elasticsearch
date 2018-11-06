@@ -127,13 +127,24 @@ class ElasticServer {
         synchronized (startedLock) {
             System.out.println("Inside synchronized (startedLock)");
             boolean timedOut = false;
-            while (!started && !timedOut && (elastic == null || elastic.isAlive())) {
-                System.out.println("Waiting for another 100");
-                startedLock.wait(100);
+            //while (!timedOut && (elastic == null || elastic.isAlive())) {
+            while (!timedOut) {
+                System.out.println("started: " + started);
+                System.out.println("elastic null? :" + elastic);
+                if (elastic != null) {
+                    System.out.println("elastic.isAlive()? :" + elastic.isAlive());
+                }
+                if (elastic != null && elastic.isAlive()) {
+                    System.out.println("Elastic is alive! brekaing the wait loop");
+                    break;
+                }
+                System.out.println("Waiting for another 1000");
+
+                startedLock.wait(1000);
                 long currentTime2 = System.currentTimeMillis();
-                System.out.println("comparing: " + currentTime2 + " , " + waitUtil);
+                //System.out.println("comparing: " + currentTime2 + " , " + waitUtil);
                 timedOut = currentTime2 > waitUtil;
-                System.out.println("timedOut: " + timedOut);
+                //System.out.println("timedOut: " + timedOut);
             }
             System.out.println("exited waiting loop");
             System.out.println("timedOut: " + timedOut);
