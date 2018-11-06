@@ -117,7 +117,11 @@ class ElasticServer {
     private void waitForElasticToStart() throws InterruptedException {
         logger.info("Waiting for ElasticSearch to start...");
         System.out.println("Waiting for ElasticSearch to start...");
-        long waitUtil = System.currentTimeMillis() + startTimeoutInMs;
+        System.out.println("startTimeoutInMs: " + startTimeoutInMs);
+        long currentTime = System.currentTimeMillis();
+        System.out.println("currentTimeMs: " + currentTime);
+
+        long waitUtil = currentTime + startTimeoutInMs;
         System.out.println("Wait until: " + waitUtil);
 
         synchronized (startedLock) {
@@ -126,8 +130,19 @@ class ElasticServer {
             while (!started && !timedOut && (elastic == null || elastic.isAlive())) {
                 System.out.println("Waiting for another 100");
                 startedLock.wait(100);
-                timedOut = System.currentTimeMillis() > waitUtil;
+                long currentTime2 = System.currentTimeMillis();
+                System.out.println("comparing: " + currentTime2 + " , " + waitUtil);
+                timedOut = currentTime2 > waitUtil;
+                System.out.println("timedOut: " + timedOut);
             }
+            System.out.println("exited waiting loop");
+            System.out.println("timedOut: " + timedOut);
+            System.out.println("elastic nulll? " + elastic);
+            System.out.println("elastic isAlive? ");
+            if (elastic != null) {
+                System.out.println("Elastic isAlive? " + elastic.isAlive());
+            }
+            System.out.println("started: " + started);
             if (!started) {
                 String message = timedOut ? "Failed to start elasticsearch within time-out" : "Failed to start elasticsearch. Check previous logs for details";
                 throw new EmbeddedElasticsearchStartupException(message);
