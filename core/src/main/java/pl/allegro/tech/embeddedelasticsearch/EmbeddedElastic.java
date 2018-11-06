@@ -57,11 +57,17 @@ public final class EmbeddedElastic {
         System.out.println("System out within start() 987654321");
         if (!started) {
             started = true;
+            System.out.println("Before installElastic");
             installElastic();
+            System.out.println("After installElastic");
             startElastic();
+            System.out.println("After startElastic");
             createRestClient();
+            System.out.println("After createRestClient");
             createTemplates();
+            System.out.println("After createTemplates");
             createIndices();
+            System.out.println("After createIndices");
         }
         return this;
     }
@@ -77,6 +83,7 @@ public final class EmbeddedElastic {
 
     private void startElastic() throws IOException, InterruptedException {
         if (!elasticServer.isStarted()) {
+        System.out.println("if (!elasticServer.isStarted()) {");
             elasticServer.start();
         }
     }

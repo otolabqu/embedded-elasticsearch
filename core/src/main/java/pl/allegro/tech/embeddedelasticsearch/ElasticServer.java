@@ -43,9 +43,14 @@ class ElasticServer {
     }
 
     void start() throws InterruptedException {
+    System.out.println("void start() throws InterruptedException {");
         startElasticProcess();
+        System.out.println("startElasticProcess(); done");
         installExitHook();
+        System.out.println("installExitHook(); done");
+        System.out.println("will do waitForElasticToStart();");
         waitForElasticToStart();
+        System.out.println("waitForElasticToStart(); done");
     }
 
     void stop() {
@@ -111,11 +116,15 @@ class ElasticServer {
 
     private void waitForElasticToStart() throws InterruptedException {
         logger.info("Waiting for ElasticSearch to start...");
+        System.out.println("Waiting for ElasticSearch to start...");
         long waitUtil = System.currentTimeMillis() + startTimeoutInMs;
+        System.out.println("Wait until: " + waitUtil);
 
         synchronized (startedLock) {
+            System.out.println("Inside synchronized (startedLock)");
             boolean timedOut = false;
             while (!started && !timedOut && (elastic == null || elastic.isAlive())) {
+                System.out.println("Waiting for another 100");
                 startedLock.wait(100);
                 timedOut = System.currentTimeMillis() > waitUtil;
             }
@@ -126,6 +135,7 @@ class ElasticServer {
         }
 
         logger.info("ElasticSearch started...");
+        System.out.println("ElasticSearch started...");
     }
 
     private void parseElasticLogLine(String line) {
