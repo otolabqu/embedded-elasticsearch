@@ -54,6 +54,7 @@ public final class EmbeddedElastic {
      * Downloads Elasticsearch with specified plugins, setups them and starts
      */
     public synchronized EmbeddedElastic start() throws IOException, InterruptedException {
+        System.out.println("System out within start() 987654321");
         if (!started) {
             started = true;
             installElastic();
